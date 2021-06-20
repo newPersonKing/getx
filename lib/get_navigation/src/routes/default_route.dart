@@ -10,6 +10,7 @@ import 'custom_transition.dart';
 import 'default_transitions.dart';
 import 'transitions_type.dart';
 
+/*返回最终的route*/
 class GetPageRoute<T> extends PageRoute<T> {
   GetPageRoute({
     RouteSettings? settings,
@@ -106,6 +107,7 @@ class GetPageRoute<T> extends PageRoute<T> {
     );
   }
 
+  /*生成最终的widget*/
   @override
   Widget buildPage(
     BuildContext? context,

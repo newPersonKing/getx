@@ -26,6 +26,7 @@ class PathDecoded {
   int get hashCode => regex.hashCode;
 }
 
+/*在Getx中每一个页面都会嵌套一个GetPage*/
 class GetPage<T> extends Page<T> {
   final GetPageBuilder page;
   final bool? popGesture;
@@ -91,9 +92,10 @@ class GetPage<T> extends Page<T> {
   static PathDecoded _nameToRegex(String path) {
     var keys = <String?>[];
 
+    /*把url 中的参数 替换成 匹配 只要不是乱七八糟的就行*/
     String _replace(Match pattern) {
       var buffer = StringBuffer('(?:');
-
+      /* ^(?:\.([\\w%+-._~!\$&\'()*,;=:@]+))?$ */
       if (pattern[1] != null) buffer.write('\.');
       buffer.write('([\\w%+-._~!\$&\'()*,;=:@]+))');
       if (pattern[3] != null) buffer.write('?');
@@ -102,6 +104,8 @@ class GetPage<T> extends Page<T> {
       return "$buffer";
     }
 
+    /*\. 匹配. \w 匹配字母数字 下滑线 \？匹配?  + 匹配一次或者多次 ? 匹配0次或者一次*/
+    /*这里相当于是要匹配 .:ahdawdghj? 或者.:adadada 或者 :adadsda*/
     var stringPath = '$path/?'
         .replaceAllMapped(RegExp(r'(\.)?:(\w+)(\?)?'), _replace)
         .replaceAll('//', '/');

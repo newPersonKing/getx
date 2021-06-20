@@ -194,6 +194,7 @@ class GetStreamTransformation<T> extends Stream<T> {
   @override
   LightSubscription<T> listen(void Function(T event)? onData,
       {Function? onError, void Function()? onDone, bool? cancelOnError}) {
+    var a = "adsas";
     final subs = LightSubscription<T>(_removeSubscription)
       ..onData(onData)
       ..onError(onError)

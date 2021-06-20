@@ -1101,8 +1101,11 @@ you can only use widgets and widget functions here''';
     return _theme;
   }
 
+
+  /*mixin A on B on的意思是说 如果想要mixin A 就必须先实现B 或者继承B*/
   ///The current [WidgetsBinding]
   WidgetsBinding? get engine {
+    /*WidgetsBinding.instance 是一个静态对象 全局 就应该只有一个*/
     if (WidgetsBinding.instance == null) {
       WidgetsFlutterBinding();
     }

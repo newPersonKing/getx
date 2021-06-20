@@ -196,10 +196,12 @@ class GetMaterialApp extends StatelessWidget {
       dispose: (d) {
         onDispose?.call();
       },
+      /*在GetBuilder的 initState 中回调*/
       initState: (i) {
         Get.engine!.addPostFrameCallback((timeStamp) {
           onReady?.call();
         });
+        /*这个应该是用来做 多语言的*/
         if (locale != null) Get.locale = locale;
 
         if (fallbackLocale != null) Get.fallbackLocale = fallbackLocale;
@@ -269,6 +271,9 @@ class GetMaterialApp extends StatelessWidget {
               navigatorKey:
                   (navigatorKey == null ? Get.key : Get.addKey(navigatorKey!)),
               home: home,
+
+              /*onGenerateRoute 与 routes 同时生效 routes 先执行 onGenerateRoute 后执行*/
+
               routes: routes ?? const <String, WidgetBuilder>{},
               initialRoute: initialRoute,
               onGenerateRoute: (getPages != null ? generator : onGenerateRoute),

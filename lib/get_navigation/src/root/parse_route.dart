@@ -42,6 +42,8 @@ class ParseRouteTree {
         .toList();
 
     final params = Map<String, String>.from(uri.queryParameters);
+
+    /*treeBranch key 是path value 是找到的router*/
     if (treeBranch.isNotEmpty) {
       //route is found, do further parsing to get nested query params
       final lastRoute = treeBranch.last;
@@ -99,10 +101,16 @@ class ParseRouteTree {
     for (var page in route.children!) {
       // Add Parent middlewares to children
       final pageMiddlewares = page.middlewares ?? <GetMiddleware>[];
+      /*todo GetMiddleware 是干什么用的*/
+      /*pageMiddlewares 包含 父page的pageMiddlewares与自己的pageMiddlewares*/
       pageMiddlewares.addAll(route.middlewares ?? <GetMiddleware>[]);
+      /*这个添加的是第一级children*/
       result.add(_addChild(page, parentPath, pageMiddlewares));
 
+      /*继续向下遍历 这里返回的是第二级的children*/
       final children = _flattenPage(page);
+
+      /*todo 这里为什么要添加第二级的children*/
       for (var child in children) {
         pageMiddlewares.addAll(child.middlewares ?? <GetMiddleware>[]);
         result.add(_addChild(child, parentPath, pageMiddlewares));
@@ -112,6 +120,7 @@ class ParseRouteTree {
   }
 
   /// Change the Path for a [GetPage]
+  /// 主要只是做了把父page的name 与 自己的name 进行了拼接
   GetPage _addChild(
           GetPage origin, String parentPath, List<GetMiddleware> middlewares) =>
       GetPage(
@@ -140,6 +149,7 @@ class ParseRouteTree {
     );
   }
 
+  /*path 是现在要跳转的路径*/
   Map<String, String> _parseParams(String path, PathDecoded routePath) {
     final params = <String, String>{};
     var idx = path.indexOf('?');

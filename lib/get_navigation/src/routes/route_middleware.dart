@@ -155,6 +155,7 @@ class MiddlewareRunner {
       _getMiddlewares().forEach((element) => element.onPageDispose());
 }
 
+/*页面定向 吃透setting*/
 class PageRedirect {
   GetPage? route;
   GetPage? unknownRoute;
@@ -197,6 +198,7 @@ class PageRedirect {
 
   /// check if redirect is needed
   bool needRecheck() {
+    /*这里的routeTree 就是设置的getPages*/
     final match = Get.routeTree.matchRoute(settings.name!);
     Get.parameters = match.parameters;
 
@@ -207,6 +209,7 @@ class PageRedirect {
     }
 
     final runner = MiddlewareRunner(match.route!.middlewares);
+    /*todo 难道是用来做页面生命周期的？？？*/
     route = runner.runOnPageCalled(match.route);
     addPageParameter(route!);
 
@@ -223,6 +226,8 @@ class PageRedirect {
   }
 
   void addPageParameter(GetPage route) {
+
+   /*todo 这里为什么要判断 null*/
     if (route.parameter == null) return;
 
     final parameters = Get.parameters;
